@@ -60,6 +60,8 @@ Student message: ${userMsg.content}`,
         role: "assistant",
         content: error.message?.includes("API key")
           ? "⚠️ Please set your Google Gemini API key first. Click the Settings/API Key button in the navbar."
+          : error.message?.includes("429") || error.message?.includes("quota")
+          ? "⚠️ AI quota exceeded. The free tier limit has been reached. Please wait a few minutes or upgrade your Google Cloud plan."
           : `⚠️ Error: ${error.message || "Something went wrong. Please try again."}`,
         timestamp: new Date(),
       };

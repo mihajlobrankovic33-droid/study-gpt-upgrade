@@ -43,11 +43,15 @@ export function Dashboard() {
       setCurrentContent(content);
     } catch (error: any) {
       console.error("Generation error:", error);
-      // Fallback to a simple view
+      const isQuota = error.message?.includes("429") || error.message?.includes("quota");
       setCurrentContent({
         title,
-        bulletPoints: [`Study notes about ${topic}`, "Enable AI by setting your API key in Settings"],
-        summary: `Comprehensive study notes about ${topic}. Set your Gemini API key to get AI-generated content.`,
+        bulletPoints: isQuota
+          ? ["AI quota exceeded. Please wait a few minutes or upgrade your Google Cloud plan."]
+          : [`Study notes about ${topic}`, "Enable AI by setting your API key in Settings"],
+        summary: isQuota
+          ? "The free tier limit has been reached. Please wait a few minutes or upgrade your Google Cloud plan."
+          : `Comprehensive study notes about ${topic}. Set your Gemini API key to get AI-generated content.`,
       });
     } finally {
       setIsGenerating(false);
