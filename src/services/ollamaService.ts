@@ -1,5 +1,5 @@
 const OLLAMA_URL = "http://localhost:11434/api/generate";
-// Using qwen2.5:1.5b - lightweight (986MB), runs on phones/tablets, great for STEM
+// Using qwen2.5:1.5b - lightweight (986MB), great for STEM
 const DEFAULT_MODEL = "qwen2.5:1.5b";
 
 const SYSTEM_PROMPT = `You are Study Buddy, a friendly and enthusiastic AI study assistant. Your personality is warm, encouraging, and passionate about learning.
@@ -27,7 +27,7 @@ TONE:
 export async function isOllamaRunning(): Promise<boolean> {
   try {
     const res = await fetch("http://localhost:11434/api/tags", {
-      signal: AbortSignal.timeout(2000),
+      signal: AbortSignal.timeout(1500),
     });
     return res.ok;
   } catch {

@@ -62,7 +62,7 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "⚠️ Could not connect to Ollama. Please make sure Ollama is running on your device (run `ollama serve` in terminal).",
+        content: "⚠️ Local AI is unavailable right now. Switching to built-in study assistant mode — you can still use chat and generate notes!",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMsg]);

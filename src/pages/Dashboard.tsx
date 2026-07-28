@@ -39,14 +39,14 @@ export function Dashboard() {
 
     let content: StudyContent | null = null;
 
-    // Try Ollama first (local, runs offline)
+    // Try Ollama first if available (local AI)
     try {
       const ollamaRunning = await isOllamaRunning();
       if (ollamaRunning) {
         content = await generateStudyNotesWithOllama(title, topic);
       }
     } catch (error: any) {
-      console.warn("Ollama not available, using built-in fallback:", error.message);
+      console.warn("Local AI unavailable, using built-in assistant:", error.message);
     }
 
     // Built-in fallback
