@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "../../types";
+import { chatWithOllama, isOllamaRunning } from "../../services/ollamaService";
 import { chatWithGemini } from "../../services/geminiService";
 import { Send, Loader2, Trash2, Sparkles } from "lucide-react";
 
@@ -31,44 +32,63 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
     setInput("");
     setIsLoading(true);
 
-    try {
-      const history = messages.map((m) => ({
-        role: m.role as "user" | "model",
-        parts: [{ text: m.content }],
-      }));
+    let responseText: string | null = null;
 
-      const response = await chatWithGemini(
-        `You are Study Buddy, a helpful AI study assistant. Help the student with their studies. Be concise, educational, and encouraging. Use bullet points and formatting when helpful.
+    // Try Ollama first (local, always works)
+    try {
+      const ollamaRunning = await isOllamaRunning();
+      if (ollamaRunning) {
+        const chatHistory = messages.map((m: ChatMessage) => ({
+          role: m.role as "user" | "assistant",
+          content: m.content,
+        }));
+        responseText = await chatWithOllama(userMsg.content, chatHistory);
+      }
+    } catch (ollamaError: any) {
+      console.warn("Ollama chat failed, trying Gemini:", ollamaError.message);
+    }
+
+    // Fall back to Gemini if Ollama fails
+    if (!responseText) {
+      try {
+        const history = messages.map((m: ChatMessage) => ({
+          role: m.role as "user" | "model",
+          parts: [{ text: m.content }],
+        }));
+
+        responseText = await chatWithGemini(
+          `You are Study Buddy, a helpful AI study assistant. Help the student with their studies. Be concise, educational, and encouraging. Use bullet points and formatting when helpful.
 
 Student message: ${userMsg.content}`,
-        history
-      );
+          history
+        );
+      } catch (geminiError: any) {
+        console.error("Gemini chat failed:", geminiError.message);
+      }
+    }
 
+    if (responseText) {
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response,
+        content: responseText,
         timestamp: new Date(),
       };
 
       const updatedMessages = [...messages, userMsg, assistantMsg];
       setMessages((prev) => [...prev, assistantMsg]);
       onSaveSession(updatedMessages);
-    } catch (error: any) {
+    } else {
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: error.message?.includes("API key")
-          ? "⚠️ Please set your Google Gemini API key first. Click the Settings/API Key button in the navbar."
-          : error.message?.includes("429") || error.message?.includes("quota")
-          ? "⚠️ AI quota exceeded. The free tier limit has been reached. Please wait a few minutes or upgrade your Google Cloud plan."
-          : `⚠️ Error: ${error.message || "Something went wrong. Please try again."}`,
+        content: "⚠️ Could not connect to any AI provider. Please make sure Ollama is running (run `ollama serve` in terminal) or check your API key.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMsg]);
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   };
 
   const clearChat = () => {
@@ -132,7 +152,7 @@ Student message: ${userMsg.content}`,
             </div>
           </div>
         ) : (
-          messages.map((msg) => (
+          messages.map((msg: ChatMessage) => (
             <div
               key={msg.id}
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}

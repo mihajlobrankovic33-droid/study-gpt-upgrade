@@ -5,6 +5,7 @@ import { GenerateForm } from "../components/study/GenerateForm";
 import { GeneratedContent } from "../components/study/GeneratedContent";
 import { NotesList } from "../components/study/NotesList";
 import { getNotes, saveNote, deleteNote, saveChatSession } from "../services/notesService";
+import { generateStudyNotesWithOllama, isOllamaRunning } from "../services/ollamaService";
 import { generateStudyNotesWithAI } from "../services/geminiService";
 import { generateStudyNotes } from "../services/aiService";
 import { Note, StudyContent, ChatMessage } from "../types";
@@ -37,17 +38,34 @@ export function Dashboard() {
     setCurrentTitle(title);
     setCurrentTopic(topic);
 
+    let content: StudyContent | null = null;
+
+    // Try Ollama first (local, always works offline)
     try {
-      const content = await generateStudyNotesWithAI(title, topic);
-      setCurrentContent(content);
+      const ollamaRunning = await isOllamaRunning();
+      if (ollamaRunning) {
+        content = await generateStudyNotesWithOllama(title, topic);
+      }
     } catch (error: any) {
-      console.error("Gemini API error, using fallback:", error.message);
-      // Fallback to built-in AI service when Gemini API fails
-      const fallbackContent = generateStudyNotes(title, topic);
-      setCurrentContent(fallbackContent);
-    } finally {
-      setIsGenerating(false);
+      console.warn("Ollama not available, trying Gemini:", error.message);
     }
+
+    // Try Gemini if Ollama fails
+    if (!content) {
+      try {
+        content = await generateStudyNotesWithAI(title, topic);
+      } catch (error: any) {
+        console.warn("Gemini not available, using built-in fallback:", error.message);
+      }
+    }
+
+    // Built-in fallback
+    if (!content) {
+      content = generateStudyNotes(title, topic);
+    }
+
+    setCurrentContent(content);
+    setIsGenerating(false);
   }, []);
 
   const handleSave = useCallback(() => {
