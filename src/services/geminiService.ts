@@ -4,24 +4,14 @@ let genAI: GoogleGenerativeAI | null = null;
 let model: any = null;
 
 function getKey(): string {
-  return localStorage.getItem("gemini-api-key") || import.meta.env.VITE_GEMINI_API_KEY || "";
+  return import.meta.env.VITE_GEMINI_API_KEY || "";
 }
 
 function initModel() {
   const key = getKey();
-  if (!key) throw new Error("No API key set");
+  if (!key) throw new Error("No API key set in .env file");
   genAI = new GoogleGenerativeAI(key);
   model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-}
-
-export function setApiKey(key: string) {
-  localStorage.setItem("gemini-api-key", key);
-  genAI = new GoogleGenerativeAI(key);
-  model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-}
-
-export function getApiKey(): string {
-  return getKey();
 }
 
 export function hasApiKey(): boolean {

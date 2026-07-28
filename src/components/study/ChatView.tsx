@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "../../types";
-import { chatWithGemini, hasApiKey } from "../../services/geminiService";
+import { chatWithGemini } from "../../services/geminiService";
 import { Send, Loader2, Trash2, Sparkles } from "lucide-react";
 
 interface ChatViewProps {
@@ -169,14 +169,14 @@ Student message: ${userMsg.content}`,
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={hasApiKey() ? "Ask a study question..." : "Set your API key in Settings first..."}
+          placeholder="Ask a study question..."
           rows={1}
           className="flex-1 min-h-[44px] max-h-[120px] rounded-xl border border-input bg-card/50 px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-all resize-none"
-          disabled={isLoading || !hasApiKey()}
+          disabled={isLoading}
         />
         <button
           onClick={sendMessage}
-          disabled={!input.trim() || isLoading || !hasApiKey()}
+          disabled={!input.trim() || isLoading}
           className="h-[44px] w-[44px] rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/20 shrink-0"
         >
           {isLoading ? (

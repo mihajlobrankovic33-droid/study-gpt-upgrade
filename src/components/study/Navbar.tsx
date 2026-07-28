@@ -1,13 +1,12 @@
-import { BookOpen, Settings, MessageSquare } from "lucide-react";
+import { BookOpen, MessageSquare } from "lucide-react";
 
 interface NavbarProps {
   onLibraryClick: () => void;
   onChatClick: () => void;
-  onSettingsClick: () => void;
   activeView: "chat" | "notes";
 }
 
-export function Navbar({ onLibraryClick, onChatClick, onSettingsClick, activeView }: NavbarProps) {
+export function Navbar({ onLibraryClick, onChatClick, activeView }: NavbarProps) {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 md:px-6 max-w-7xl mx-auto">
@@ -41,13 +40,6 @@ export function Navbar({ onLibraryClick, onChatClick, onSettingsClick, activeVie
           >
             <BookOpen className="h-4 w-4" />
             <span className="hidden sm:inline">Library</span>
-          </button>
-          <button
-            onClick={onSettingsClick}
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent/10 hover:text-accent-foreground text-muted-foreground"
-          >
-            <Settings className="h-4 w-4" />
-            <span className="hidden sm:inline">Settings</span>
           </button>
         </div>
       </div>

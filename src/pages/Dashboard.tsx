@@ -4,9 +4,9 @@ import { ChatView } from "../components/study/ChatView";
 import { GenerateForm } from "../components/study/GenerateForm";
 import { GeneratedContent } from "../components/study/GeneratedContent";
 import { NotesList } from "../components/study/NotesList";
-import { SettingsModal } from "../components/study/SettingsModal";
 import { getNotes, saveNote, deleteNote, saveChatSession } from "../services/notesService";
-import { generateStudyNotesWithAI, setApiKey, getApiKey, hasApiKey } from "../services/geminiService";
+import { generateStudyNotesWithAI } from "../services/geminiService";
+import { generateStudyNotes } from "../services/aiService";
 import { Note, StudyContent, ChatMessage } from "../types";
 import { BookOpen, GraduationCap, ChevronDown, ChevronUp, Library, MessageSquare, GraduationCap as Hat } from "lucide-react";
 
@@ -20,7 +20,6 @@ export function Dashboard() {
   const [currentTitle, setCurrentTitle] = useState("");
   const [currentTopic, setCurrentTopic] = useState("");
   const [showMobileLibrary, setShowMobileLibrary] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     setNotes(getNotes());
@@ -42,17 +41,10 @@ export function Dashboard() {
       const content = await generateStudyNotesWithAI(title, topic);
       setCurrentContent(content);
     } catch (error: any) {
-      console.error("Generation error:", error);
-      const isQuota = error.message?.includes("429") || error.message?.includes("quota");
-      setCurrentContent({
-        title,
-        bulletPoints: isQuota
-          ? ["AI quota exceeded. Please wait a few minutes or upgrade your Google Cloud plan."]
-          : [`Study notes about ${topic}`, "Enable AI by setting your API key in Settings"],
-        summary: isQuota
-          ? "The free tier limit has been reached. Please wait a few minutes or upgrade your Google Cloud plan."
-          : `Comprehensive study notes about ${topic}. Set your Gemini API key to get AI-generated content.`,
-      });
+      console.error("Gemini API error, using fallback:", error.message);
+      // Fallback to built-in AI service when Gemini API fails
+      const fallbackContent = generateStudyNotes(title, topic);
+      setCurrentContent(fallbackContent);
     } finally {
       setIsGenerating(false);
     }
@@ -107,25 +99,12 @@ export function Dashboard() {
     saveChatSession(session);
   }, []);
 
-  const handleSaveApiKey = useCallback((key: string) => {
-    setApiKey(key);
-    setShowSettings(false);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar
         onLibraryClick={() => setShowMobileLibrary(!showMobileLibrary)}
         onChatClick={() => setActiveView("chat")}
-        onSettingsClick={() => setShowSettings(true)}
         activeView={activeView}
-      />
-
-      <SettingsModal
-        isOpen={showSettings}
-        onClose={() => setShowSettings(false)}
-        currentKey={getApiKey()}
-        onSaveKey={handleSaveApiKey}
       />
 
       <main className="max-w-7xl mx-auto px-4 py-6 md:py-8">
