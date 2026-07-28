@@ -17,10 +17,6 @@ export function Navbar({ onLibraryClick, onChatClick, activeView }: NavbarProps)
           <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
             Study Buddy
           </span>
-          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Gemini Ready
-          </span>
         </div>
         <div className="flex items-center gap-1 ml-auto">
           <button
