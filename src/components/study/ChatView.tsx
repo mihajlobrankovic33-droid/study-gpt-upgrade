@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "../../types";
 import { chatWithOllama, isOllamaRunning } from "../../services/ollamaService";
-import { chatWithGemini } from "../../services/geminiService";
 import { Send, Loader2, Trash2, Sparkles } from "lucide-react";
 
 interface ChatViewProps {
@@ -34,7 +33,7 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
 
     let responseText: string | null = null;
 
-    // Try Ollama first (local, always works)
+    // Use Ollama (local AI)
     try {
       const ollamaRunning = await isOllamaRunning();
       if (ollamaRunning) {
@@ -45,26 +44,7 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
         responseText = await chatWithOllama(userMsg.content, chatHistory);
       }
     } catch (ollamaError: any) {
-      console.warn("Ollama chat failed, trying Gemini:", ollamaError.message);
-    }
-
-    // Fall back to Gemini if Ollama fails
-    if (!responseText) {
-      try {
-        const history = messages.map((m: ChatMessage) => ({
-          role: m.role as "user" | "model",
-          parts: [{ text: m.content }],
-        }));
-
-        responseText = await chatWithGemini(
-          `You are Study Buddy, a helpful AI study assistant. Help the student with their studies. Be concise, educational, and encouraging. Use bullet points and formatting when helpful.
-
-Student message: ${userMsg.content}`,
-          history
-        );
-      } catch (geminiError: any) {
-        console.error("Gemini chat failed:", geminiError.message);
-      }
+      console.warn("Ollama chat failed:", ollamaError.message);
     }
 
     if (responseText) {
@@ -82,7 +62,7 @@ Student message: ${userMsg.content}`,
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "⚠️ Could not connect to any AI provider. Please make sure Ollama is running (run `ollama serve` in terminal) or check your API key.",
+        content: "⚠️ Could not connect to Ollama. Please make sure Ollama is running on your device (run `ollama serve` in terminal).",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -130,7 +110,7 @@ Student message: ${userMsg.content}`,
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-1">Start a Study Session</h3>
             <p className="text-sm text-muted-foreground max-w-sm">
-              Ask me anything about your studies! I can explain concepts, help with homework, create summaries, and more.
+              Ask me anything about your studies! I can explain STEM concepts, help with homework, create summaries, and more.
             </p>
             <div className="flex flex-wrap gap-2 mt-6 justify-center">
               {[
