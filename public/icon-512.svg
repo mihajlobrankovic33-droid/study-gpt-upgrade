@@ -2,33 +2,49 @@
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#34d399"/>
-      <stop offset="100%" style="stop-color:#14b8a6"/>
+      <stop offset="100%" style="stop-color:#0d9488"/>
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="100" fill="url(#bg)"/>
-  <!-- Book -->
-  <g transform="translate(100, 80)">
-    <rect x="10" y="20" width="292" height="240" rx="20" fill="white" opacity="0.95"/>
-    <rect x="10" y="20" width="292" height="240" rx="20" fill="none" stroke="#0d9488" stroke-width="4"/>
-    <line x1="156" y1="28" x2="156" y2="252" stroke="#0d9488" stroke-width="4" opacity="0.5"/>
-    <!-- Left page lines -->
-    <line x1="36" y1="72" x2="136" y2="72" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <line x1="36" y1="108" x2="136" y2="108" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <line x1="36" y1="144" x2="136" y2="144" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <line x1="36" y1="180" x2="136" y2="180" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <!-- Right page lines -->
-    <line x1="172" y1="72" x2="276" y2="72" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <line x1="172" y1="108" x2="276" y2="108" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <line x1="172" y1="144" x2="276" y2="144" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <line x1="172" y1="180" x2="276" y2="180" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
+  <!-- Rabbit body -->
+  <g transform="translate(256, 256)">
+    <!-- Ears -->
+    <ellipse cx="-70" cy="-155" rx="28" ry="85" fill="white" opacity="0.95" transform="rotate(-15, -70, -155)"/>
+    <ellipse cx="-70" cy="-155" rx="12" ry="65" fill="#fce7f3" opacity="0.8" transform="rotate(-15, -70, -155)"/>
+    <ellipse cx="70" cy="-155" rx="28" ry="85" fill="white" opacity="0.95" transform="rotate(15, 70, -155)"/>
+    <ellipse cx="70" cy="-155" rx="12" ry="65" fill="#fce7f3" opacity="0.8" transform="rotate(15, 70, -155)"/>
+    <!-- Head -->
+    <circle cx="0" cy="-50" r="95" fill="white" stroke="#d1d5db" stroke-width="4"/>
+    <!-- Eyes -->
+    <ellipse cx="-36" cy="-65" rx="16" ry="18" fill="#1f2937"/>
+    <ellipse cx="-36" cy="-65" rx="8" ry="9" fill="white" opacity="0.7"/>
+    <ellipse cx="36" cy="-65" rx="16" ry="18" fill="#1f2937"/>
+    <ellipse cx="36" cy="-65" rx="8" ry="9" fill="white" opacity="0.7"/>
+    <!-- Nose -->
+    <ellipse cx="0" cy="-35" rx="10" ry="8" fill="#fca5a5"/>
+    <!-- Mouth -->
+    <path d="M-10 -28 Q0 -18 10 -28" fill="none" stroke="#6b7280" stroke-width="4" stroke-linecap="round"/>
+    <!-- Cheeks -->
+    <circle cx="-52" cy="-35" r="14" fill="#fce7f3" opacity="0.6"/>
+    <circle cx="52" cy="-35" r="14" fill="#fce7f3" opacity="0.6"/>
+    <!-- Whiskers -->
+    <line x1="-72" y1="-40" x2="-116" y2="-50" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-72" y1="-30" x2="-116" y2="-30" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
+    <line x1="72" y1="-40" x2="116" y2="-50" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
+    <line x1="72" y1="-30" x2="116" y2="-30" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
+    <!-- Teeth -->
+    <rect x="-8" y="-26" width="16" height="12" rx="2" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+    <!-- Body -->
+    <ellipse cx="0" cy="75" rx="80" ry="55" fill="white" stroke="#d1d5db" stroke-width="4"/>
+    <!-- Book in paws -->
+    <rect x="-48" y="25" width="96" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="4"/>
+    <line x1="0" y1="30" x2="0" y2="90" stroke="#d97706" stroke-width="2.5" opacity="0.5"/>
+    <line x1="-32" y1="45" x2="-10" y2="45" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-32" y1="60" x2="-10" y2="60" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+    <line x1="10" y1="45" x2="32" y2="45" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+    <line x1="10" y1="60" x2="32" y2="60" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+    <!-- Paws -->
+    <ellipse cx="-42" cy="70" rx="20" ry="12" fill="white" stroke="#d1d5db" stroke-width="2.5"/>
+    <ellipse cx="42" cy="70" rx="20" ry="12" fill="white" stroke="#d1d5db" stroke-width="2.5"/>
   </g>
-  <!-- Graduation cap -->
-  <g transform="translate(260, 140)">
-    <path d="M10 80 L10 40 L90 6 L170 40 L170 80 Z" fill="white" stroke="#0d9488" stroke-width="6" stroke-linejoin="round"/>
-    <rect x="70" y="80" width="40" height="24" rx="6" fill="white" stroke="#0d9488" stroke-width="6"/>
-    <line x1="90" y1="104" x2="90" y2="136" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
-    <circle cx="90" cy="150" r="14" fill="#34d399" stroke="white" stroke-width="4"/>
-  </g>
-  <!-- "Study Buddy" text -->
-  <text x="256" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="42" fill="white" letter-spacing="2">Study Buddy</text>
 </svg>
