@@ -1,4 +1,4 @@
-const CACHE_NAME = "study-buddy-v1";
+const CACHE_NAME = "study-buddy-v2";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
@@ -27,17 +27,29 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch: network first, fallback to cache
+// Fetch: network first for static assets, skip API calls
 self.addEventListener("fetch", (event) => {
   const { request } = event;
+  const url = new URL(request.url);
 
   // Skip non-GET requests
   if (request.method !== "GET") return;
 
+  // Skip API calls to Ollama and WebLLM model downloads - let them pass through
+  if (
+    url.hostname === "localhost" ||
+    url.hostname === "127.0.0.1" ||
+    url.hostname.includes("huggingface.co") ||
+    url.hostname.includes("mlc.ai") ||
+    url.hostname.includes("webllm")
+  ) {
+    return;
+  }
+
+  // For same-origin static assets: network first, cache fallback
   event.respondWith(
     fetch(request)
       .then((response) => {
-        // Cache successful responses
         if (response.ok) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -47,10 +59,8 @@ self.addEventListener("fetch", (event) => {
         return response;
       })
       .catch(() => {
-        // Fallback to cache when offline
         return caches.match(request).then((cached) => {
           if (cached) return cached;
-          // For navigation requests, return cached index.html
           if (request.mode === "navigate") {
             return caches.match("/index.html");
           }
