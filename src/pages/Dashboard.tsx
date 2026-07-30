@@ -6,6 +6,7 @@ import { GeneratedContent } from "../components/study/GeneratedContent";
 import { NotesList } from "../components/study/NotesList";
 import { getNotes, saveNote, deleteNote, saveChatSession } from "../services/notesService";
 import { generateStudyNotesWithOllama, isOllamaRunning } from "../services/ollamaService";
+import { generateStudyNotesWithWebLLM, isModelReady as isWebLLMReady } from "../services/webllmService";
 import { generateStudyNotes } from "../services/aiService";
 import { Note, StudyContent, ChatMessage } from "../types";
 import { BookOpen, GraduationCap, ChevronDown, ChevronUp, Library, MessageSquare, GraduationCap as Hat } from "lucide-react";
@@ -39,14 +40,26 @@ export function Dashboard() {
 
     let content: StudyContent | null = null;
 
-    // Try Ollama first if available (local AI)
+    // Try WebLLM first (runs on device, no server needed)
     try {
-      const ollamaRunning = await isOllamaRunning();
-      if (ollamaRunning) {
-        content = await generateStudyNotesWithOllama(title, topic);
+      const webllmReady = await isWebLLMReady();
+      if (webllmReady) {
+        content = await generateStudyNotesWithWebLLM(title, topic);
       }
     } catch (error: any) {
-      console.warn("Local AI unavailable, using built-in assistant:", error.message);
+      console.warn("WebLLM unavailable, trying Ollama:", error.message);
+    }
+
+    // Try Ollama if WebLLM not available
+    if (!content) {
+      try {
+        const ollamaRunning = await isOllamaRunning();
+        if (ollamaRunning) {
+          content = await generateStudyNotesWithOllama(title, topic);
+        }
+      } catch (error: any) {
+        console.warn("Ollama unavailable, using built-in assistant:", error.message);
+      }
     }
 
     // Built-in fallback

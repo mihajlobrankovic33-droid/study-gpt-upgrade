@@ -1,7 +1,14 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChatMessage } from "../../types";
+import {
+  chatWithWebLLM,
+  loadModel,
+  isModelReady,
+  isModelLoading,
+  isWebLLMSupported,
+} from "../../services/webllmService";
 import { chatWithOllama, isOllamaRunning } from "../../services/ollamaService";
-import { Send, Loader2, Trash2, Sparkles } from "lucide-react";
+import { Send, Loader2, Trash2, Sparkles, Download, Cpu, WifiOff } from "lucide-react";
 
 interface ChatViewProps {
   onSaveSession: (messages: ChatMessage[]) => void;
@@ -11,11 +18,51 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [modelState, setModelState] = useState<"unloaded" | "loading" | "ready" | "unsupported">("unloaded");
+  const [loadProgress, setLoadProgress] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Auto-load model on first visit if WebGPU is supported
+  useEffect(() => {
+    const initModel = async () => {
+      if (!isWebLLMSupported()) {
+        setModelState("unsupported");
+        return;
+      }
+
+      const ready = await isModelReady();
+      if (ready) {
+        setModelState("ready");
+        return;
+      }
+
+      if (isModelLoading()) {
+        setModelState("loading");
+        return;
+      }
+
+      // Don't auto-load, wait for user to click
+      setModelState("unloaded");
+    };
+    initModel();
+  }, []);
+
+  const handleLoadModel = async () => {
+    setModelState("loading");
+    try {
+      await loadModel((progress) => {
+        setLoadProgress(progress);
+      });
+      setModelState("ready");
+    } catch (error: any) {
+      console.error("Model load failed:", error);
+      setModelState("unsupported");
+    }
+  };
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -33,18 +80,33 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
 
     let responseText: string | null = null;
 
-    // Use Ollama (local AI)
-    try {
-      const ollamaRunning = await isOllamaRunning();
-      if (ollamaRunning) {
+    // Try WebLLM first (runs on device, no server needed)
+    if (modelState === "ready") {
+      try {
         const chatHistory = messages.map((m: ChatMessage) => ({
           role: m.role as "user" | "assistant",
           content: m.content,
         }));
-        responseText = await chatWithOllama(userMsg.content, chatHistory);
+        responseText = await chatWithWebLLM(userMsg.content, chatHistory);
+      } catch (webllmError: any) {
+        console.warn("WebLLM failed, trying Ollama:", webllmError.message);
       }
-    } catch (ollamaError: any) {
-      console.warn("Ollama chat failed:", ollamaError.message);
+    }
+
+    // Fall back to Ollama if WebLLM not available
+    if (!responseText) {
+      try {
+        const ollamaRunning = await isOllamaRunning();
+        if (ollamaRunning) {
+          const chatHistory = messages.map((m: ChatMessage) => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+          }));
+          responseText = await chatWithOllama(userMsg.content, chatHistory);
+        }
+      } catch (ollamaError: any) {
+        console.warn("Ollama failed:", ollamaError.message);
+      }
     }
 
     if (responseText) {
@@ -62,7 +124,7 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "⚠️ Local AI is unavailable right now. Switching to built-in study assistant mode — you can still use chat and generate notes!",
+        content: "⚠️ AI model not available. Tap \"Load AI Model\" above to download the on-device AI, or use the Study Notes tab for built-in study content.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -89,6 +151,12 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
         <div className="flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-emerald-400" />
           <h2 className="text-sm font-semibold text-foreground">AI Chat</h2>
+          {modelState === "ready" && (
+            <span className="flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+              <Cpu className="h-2.5 w-2.5" />
+              On-Device AI
+            </span>
+          )}
         </div>
         {messages.length > 0 && (
           <button
@@ -100,6 +168,63 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
           </button>
         )}
       </div>
+
+      {/* Model Loading Banner */}
+      {modelState === "unloaded" && isWebLLMSupported() && (
+        <div className="mb-4 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0">
+              <Download className="h-5 w-5 text-emerald-400" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Load AI Model on Your Device</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Download a lightweight AI model (~1GB) that runs on your phone/tablet. Works offline after download.
+              </p>
+            </div>
+            <button
+              onClick={handleLoadModel}
+              className="shrink-0 px-4 py-2 rounded-lg bg-emerald-500 text-white text-xs font-medium hover:bg-emerald-600 transition-colors"
+            >
+              Load Model
+            </button>
+          </div>
+        </div>
+      )}
+
+      {modelState === "loading" && (
+        <div className="mb-4 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5">
+          <div className="flex items-center gap-3 mb-2">
+            <Loader2 className="h-5 w-5 text-amber-400 animate-spin" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Downloading AI Model... {loadProgress}%</p>
+              <p className="text-xs text-muted-foreground">This happens once. After download, AI works offline.</p>
+            </div>
+          </div>
+          <div className="h-2 rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-300"
+              style={{ width: `${loadProgress}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      {modelState === "unsupported" && (
+        <div className="mb-4 p-4 rounded-xl border border-border/50 bg-card/50">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
+              <WifiOff className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">On-Device AI Not Available</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Your browser doesn't support WebGPU. You can still use Study Notes with built-in content.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-1">
