@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ChatMessage } from "../../types";
 import {
   chatWithWebLLM,
@@ -21,59 +21,78 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
   const [modelState, setModelState] = useState<"unloaded" | "loading" | "ready" | "unsupported">("unloaded");
   const [loadProgress, setLoadProgress] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<ChatMessage[]>([]);
+  const modelStateRef = useRef<"unloaded" | "loading" | "ready" | "unsupported">("unloaded");
+
+  // Keep refs in sync with state
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  useEffect(() => {
+    modelStateRef.current = modelState;
+  }, [modelState]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Auto-load model on first visit if WebGPU is supported
+  // Check WebGPU support on mount
   useEffect(() => {
     const initModel = async () => {
       if (!isWebLLMSupported()) {
         setModelState("unsupported");
+        modelStateRef.current = "unsupported";
         return;
       }
 
       const ready = await isModelReady();
       if (ready) {
         setModelState("ready");
+        modelStateRef.current = "ready";
         return;
       }
 
       if (isModelLoading()) {
         setModelState("loading");
+        modelStateRef.current = "loading";
         return;
       }
 
-      // Don't auto-load, wait for user to click
       setModelState("unloaded");
+      modelStateRef.current = "unloaded";
     };
     initModel();
   }, []);
 
   const handleLoadModel = async () => {
     setModelState("loading");
+    modelStateRef.current = "loading";
     try {
       await loadModel((progress) => {
         setLoadProgress(progress);
       });
       setModelState("ready");
+      modelStateRef.current = "ready";
     } catch (error: any) {
       console.error("Model load failed:", error);
       setModelState("unsupported");
+      modelStateRef.current = "unsupported";
     }
   };
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  const sendMessage = useCallback(async () => {
+    const trimmed = input.trim();
+    if (!trimmed || isLoading) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
       role: "user",
-      content: input.trim(),
+      content: trimmed,
       timestamp: new Date(),
     };
 
+    // Use functional update to avoid stale closure
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
@@ -81,9 +100,9 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
     let responseText: string | null = null;
 
     // Try WebLLM first (runs on device, no server needed)
-    if (modelState === "ready") {
+    if (modelStateRef.current === "ready") {
       try {
-        const chatHistory = messages.map((m: ChatMessage) => ({
+        const chatHistory = messagesRef.current.map((m: ChatMessage) => ({
           role: m.role as "user" | "assistant",
           content: m.content,
         }));
@@ -98,7 +117,7 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
       try {
         const ollamaRunning = await isOllamaRunning();
         if (ollamaRunning) {
-          const chatHistory = messages.map((m: ChatMessage) => ({
+          const chatHistory = messagesRef.current.map((m: ChatMessage) => ({
             role: m.role as "user" | "assistant",
             content: m.content,
           }));
@@ -117,9 +136,13 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
         timestamp: new Date(),
       };
 
-      const updatedMessages = [...messages, userMsg, assistantMsg];
-      setMessages((prev) => [...prev, assistantMsg]);
-      onSaveSession(updatedMessages);
+      // Use functional update to get the latest messages
+      setMessages((prev) => {
+        const updated = [...prev, assistantMsg];
+        // Save session with the latest messages
+        onSaveSession(updated);
+        return updated;
+      });
     } else {
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -131,10 +154,11 @@ export function ChatView({ onSaveSession }: ChatViewProps) {
     }
 
     setIsLoading(false);
-  };
+  }, [input, isLoading, onSaveSession]);
 
   const clearChat = () => {
     setMessages([]);
+    messagesRef.current = [];
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
