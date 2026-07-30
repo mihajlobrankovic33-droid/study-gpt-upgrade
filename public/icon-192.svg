@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34d399"/>
+      <stop offset="100%" style="stop-color:#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="40" fill="url(#bg)"/>
+  <!-- Book -->
+  <g transform="translate(40, 36)">
+    <rect x="4" y="8" width="104" height="88" rx="8" fill="white" opacity="0.95"/>
+    <rect x="4" y="8" width="104" height="88" rx="8" fill="none" stroke="#0d9488" stroke-width="2"/>
+    <line x1="56" y1="12" x2="56" y2="92" stroke="#0d9488" stroke-width="2" opacity="0.5"/>
+    <!-- Left page lines -->
+    <line x1="14" y1="30" x2="48" y2="30" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="14" y1="44" x2="48" y2="44" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="14" y1="58" x2="48" y2="58" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Right page lines -->
+    <line x1="64" y1="30" x2="98" y2="30" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="64" y1="44" x2="98" y2="44" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="64" y1="58" x2="98" y2="58" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <!-- Graduation cap -->
+  <g transform="translate(96, 52)">
+    <path d="M4 32 L4 16 L36 2 L68 16 L68 32 Z" fill="white" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="28" y="32" width="16" height="10" rx="2" fill="white" stroke="#0d9488" stroke-width="2"/>
+    <line x1="36" y1="42" x2="36" y2="56" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="36" cy="60" r="6" fill="#34d399" stroke="white" stroke-width="2"/>
+  </g>
+</svg>
