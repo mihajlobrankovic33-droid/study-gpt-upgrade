@@ -2,49 +2,50 @@
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#34d399"/>
-      <stop offset="100%" style="stop-color:#0d9488"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="ear" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce7f3"/>
+      <stop offset="100%" style="stop-color:#fbcfe8"/>
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="100" fill="url(#bg)"/>
-  <!-- Rabbit body -->
-  <g transform="translate(256, 256)">
+  <!-- Rabbit silhouette -->
+  <g transform="translate(256, 260)">
     <!-- Ears -->
-    <ellipse cx="-70" cy="-155" rx="28" ry="85" fill="white" opacity="0.95" transform="rotate(-15, -70, -155)"/>
-    <ellipse cx="-70" cy="-155" rx="12" ry="65" fill="#fce7f3" opacity="0.8" transform="rotate(-15, -70, -155)"/>
-    <ellipse cx="70" cy="-155" rx="28" ry="85" fill="white" opacity="0.95" transform="rotate(15, 70, -155)"/>
-    <ellipse cx="70" cy="-155" rx="12" ry="65" fill="#fce7f3" opacity="0.8" transform="rotate(15, 70, -155)"/>
+    <path d="M-58,-210 C-58,-290 -37,-340 -22,-340 C-7,-340 4,-290 4,-210" fill="white" stroke="#e5e7eb" stroke-width="4"/>
+    <path d="M-48,-210 C-48,-278 -32,-322 -22,-322 C-12,-322 -2,-278 -2,-210" fill="url(#ear)"/>
+    <path d="M58,-210 C58,-290 37,-340 22,-340 C7,-340 -4,-290 -4,-210" fill="white" stroke="#e5e7eb" stroke-width="4"/>
+    <path d="M48,-210 C48,-278 32,-322 22,-322 C12,-322 2,-278 2,-210" fill="url(#ear)"/>
     <!-- Head -->
-    <circle cx="0" cy="-50" r="95" fill="white" stroke="#d1d5db" stroke-width="4"/>
+    <ellipse cx="0" cy="-92" rx="100" ry="92" fill="white" stroke="#e5e7eb" stroke-width="4"/>
     <!-- Eyes -->
-    <ellipse cx="-36" cy="-65" rx="16" ry="18" fill="#1f2937"/>
-    <ellipse cx="-36" cy="-65" rx="8" ry="9" fill="white" opacity="0.7"/>
-    <ellipse cx="36" cy="-65" rx="16" ry="18" fill="#1f2937"/>
-    <ellipse cx="36" cy="-65" rx="8" ry="9" fill="white" opacity="0.7"/>
+    <ellipse cx="-36" cy="-105" rx="13" ry="14" fill="#1f2937"/>
+    <ellipse cx="-36" cy="-105" rx="5" ry="5" fill="white" opacity="0.8"/>
+    <ellipse cx="36" cy="-105" rx="13" ry="14" fill="#1f2937"/>
+    <ellipse cx="36" cy="-105" rx="5" ry="5" fill="white" opacity="0.8"/>
     <!-- Nose -->
-    <ellipse cx="0" cy="-35" rx="10" ry="8" fill="#fca5a5"/>
+    <path d="M-8,-78 L0,-70 L8,-78" fill="#fca5a5" stroke="#f87171" stroke-width="1.5" stroke-linejoin="round"/>
     <!-- Mouth -->
-    <path d="M-10 -28 Q0 -18 10 -28" fill="none" stroke="#6b7280" stroke-width="4" stroke-linecap="round"/>
+    <path d="M0,-70 Q-10,-58 0,-52 Q10,-58 0,-70" fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round"/>
     <!-- Cheeks -->
-    <circle cx="-52" cy="-35" r="14" fill="#fce7f3" opacity="0.6"/>
-    <circle cx="52" cy="-35" r="14" fill="#fce7f3" opacity="0.6"/>
-    <!-- Whiskers -->
-    <line x1="-72" y1="-40" x2="-116" y2="-50" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
-    <line x1="-72" y1="-30" x2="-116" y2="-30" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
-    <line x1="72" y1="-40" x2="116" y2="-50" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
-    <line x1="72" y1="-30" x2="116" y2="-30" stroke="#d1d5db" stroke-width="4" stroke-linecap="round"/>
-    <!-- Teeth -->
-    <rect x="-8" y="-26" width="16" height="12" rx="2" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+    <circle cx="-58" cy="-78" r="10" fill="#fce7f3" opacity="0.5"/>
+    <circle cx="58" cy="-78" r="10" fill="#fce7f3" opacity="0.5"/>
     <!-- Body -->
-    <ellipse cx="0" cy="75" rx="80" ry="55" fill="white" stroke="#d1d5db" stroke-width="4"/>
-    <!-- Book in paws -->
-    <rect x="-48" y="25" width="96" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="4"/>
-    <line x1="0" y1="30" x2="0" y2="90" stroke="#d97706" stroke-width="2.5" opacity="0.5"/>
-    <line x1="-32" y1="45" x2="-10" y2="45" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-    <line x1="-32" y1="60" x2="-10" y2="60" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-    <line x1="10" y1="45" x2="32" y2="45" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-    <line x1="10" y1="60" x2="32" y2="60" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-    <!-- Paws -->
-    <ellipse cx="-42" cy="70" rx="20" ry="12" fill="white" stroke="#d1d5db" stroke-width="2.5"/>
-    <ellipse cx="42" cy="70" rx="20" ry="12" fill="white" stroke="#d1d5db" stroke-width="2.5"/>
+    <ellipse cx="0" cy="48" rx="85" ry="58" fill="white" stroke="#e5e7eb" stroke-width="4"/>
+    <!-- Book -->
+    <g transform="translate(0, 10)">
+      <rect x="-42" y="-6" width="84" height="64" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="4"/>
+      <line x1="0" y1="-3" x2="0" y2="55" stroke="#d97706" stroke-width="2.5" opacity="0.4"/>
+      <line x1="-26" y1="10" x2="-8" y2="10" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+      <line x1="-26" y1="24" x2="-8" y2="24" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+      <line x1="-26" y1="38" x2="-8" y2="38" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+      <line x1="8" y1="10" x2="26" y2="10" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+      <line x1="8" y1="24" x2="26" y2="24" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+      <line x1="8" y1="38" x2="26" y2="38" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <!-- Paws over book -->
+    <ellipse cx="-36" cy="42" rx="16" ry="10" fill="white" stroke="#e5e7eb" stroke-width="2.5"/>
+    <ellipse cx="36" cy="42" rx="16" ry="10" fill="white" stroke="#e5e7eb" stroke-width="2.5"/>
   </g>
 </svg>
