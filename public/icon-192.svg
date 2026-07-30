@@ -4,48 +4,33 @@
       <stop offset="0%" style="stop-color:#34d399"/>
       <stop offset="100%" style="stop-color:#059669"/>
     </linearGradient>
-    <linearGradient id="ear" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#fce7f3"/>
-      <stop offset="100%" style="stop-color:#fbcfe8"/>
-    </linearGradient>
   </defs>
   <rect width="192" height="192" rx="40" fill="url(#bg)"/>
-  <!-- Rabbit silhouette -->
-  <g transform="translate(96, 100)">
+  <!-- Minimalist rabbit head silhouette -->
+  <g transform="translate(96, 88)">
     <!-- Ears -->
-    <path d="M-22,-80 C-22,-110 -14,-130 -8,-130 C-2,-130 2,-110 2,-80" fill="white" stroke="#e5e7eb" stroke-width="1.5"/>
-    <path d="M-18,-80 C-18,-105 -13,-122 -8,-122 C-3,-122 0,-105 0,-80" fill="url(#ear)"/>
-    <path d="M22,-80 C22,-110 14,-130 8,-130 C2,-130 -2,-110 -2,-80" fill="white" stroke="#e5e7eb" stroke-width="1.5"/>
-    <path d="M18,-80 C18,-105 13,-122 8,-122 C3,-122 0,-105 0,-80" fill="url(#ear)"/>
-    <!-- Head -->
-    <ellipse cx="0" cy="-36" rx="38" ry="35" fill="white" stroke="#e5e7eb" stroke-width="1.5"/>
+    <path d="M-20,-120 C-22,-160 -18,-175 -10,-175 C-2,-175 2,-160 0,-120" fill="white" opacity="0.95"/>
+    <path d="M20,-120 C22,-160 18,-175 10,-175 C2,-175 -2,-160 0,-120" fill="white" opacity="0.95"/>
+    <path d="M-16,-120 C-17,-150 -14,-162 -10,-162 C-6,-162 -3,-150 -2,-120" fill="#fbcfe8" opacity="0.6"/>
+    <path d="M16,-120 C17,-150 14,-162 10,-162 C6,-162 3,-150 2,-120" fill="#fbcfe8" opacity="0.6"/>
+    <!-- Head oval -->
+    <ellipse cx="0" cy="-40" rx="48" ry="44" fill="white"/>
     <!-- Eyes -->
-    <ellipse cx="-14" cy="-40" rx="5" ry="5.5" fill="#1f2937"/>
-    <ellipse cx="-14" cy="-40" rx="2" ry="2" fill="white" opacity="0.8"/>
-    <ellipse cx="14" cy="-40" rx="5" ry="5.5" fill="#1f2937"/>
-    <ellipse cx="14" cy="-40" rx="2" ry="2" fill="white" opacity="0.8"/>
+    <circle cx="-18" cy="-46" r="6" fill="#1f2937"/>
+    <circle cx="-18" cy="-46" r="2" fill="white"/>
+    <circle cx="18" cy="-46" r="6" fill="#1f2937"/>
+    <circle cx="18" cy="-46" r="2" fill="white"/>
     <!-- Nose -->
-    <path d="M-3,-30 L0,-27 L3,-30" fill="#fca5a5" stroke="#f87171" stroke-width="0.5" stroke-linejoin="round"/>
+    <path d="M-4,-34 L0,-30 L4,-34" fill="#fca5a5" stroke="#f87171" stroke-width="0.5" stroke-linejoin="round"/>
     <!-- Mouth -->
-    <path d="M0,-27 Q-4,-22 0,-20 Q4,-22 0,-27" fill="none" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/>
-    <!-- Cheeks -->
-    <circle cx="-22" cy="-30" r="4" fill="#fce7f3" opacity="0.5"/>
-    <circle cx="22" cy="-30" r="4" fill="#fce7f3" opacity="0.5"/>
+    <path d="M0,-30 Q-4,-26 0,-24 Q4,-26 0,-30" fill="none" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/>
     <!-- Body -->
-    <ellipse cx="0" cy="18" rx="32" ry="22" fill="white" stroke="#e5e7eb" stroke-width="1.5"/>
-    <!-- Book -->
-    <g transform="translate(0, 4)">
-      <rect x="-16" y="-2" width="32" height="24" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
-      <line x1="0" y1="-1" x2="0" y2="21" stroke="#d97706" stroke-width="1" opacity="0.4"/>
-      <line x1="-10" y1="4" x2="-3" y2="4" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="-10" y1="9" x2="-3" y2="9" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="-10" y1="14" x2="-3" y2="14" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="3" y1="4" x2="10" y2="4" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="3" y1="9" x2="10" y2="9" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="3" y1="14" x2="10" y2="14" stroke="#d97706" stroke-width="1.5" stroke-linecap="round"/>
-    </g>
-    <!-- Paws over book -->
-    <ellipse cx="-14" cy="16" rx="6" ry="4" fill="white" stroke="#e5e7eb" stroke-width="1"/>
-    <ellipse cx="14" cy="16" rx="6" ry="4" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+    <ellipse cx="0" cy="24" rx="40" ry="28" fill="white"/>
+    <!-- Book icon -->
+    <rect x="-18" y="6" width="36" height="28" rx="3" fill="#fef3c7"/>
+    <line x1="-10" y1="14" x2="-3" y2="14" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+    <line x1="-10" y1="20" x2="-3" y2="20" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+    <line x1="3" y1="14" x2="10" y2="14" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+    <line x1="3" y1="20" x2="10" y2="20" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
   </g>
 </svg>

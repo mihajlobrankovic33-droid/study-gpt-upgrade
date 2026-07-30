@@ -4,48 +4,33 @@
       <stop offset="0%" style="stop-color:#34d399"/>
       <stop offset="100%" style="stop-color:#059669"/>
     </linearGradient>
-    <linearGradient id="ear" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#fce7f3"/>
-      <stop offset="100%" style="stop-color:#fbcfe8"/>
-    </linearGradient>
   </defs>
   <rect width="512" height="512" rx="100" fill="url(#bg)"/>
-  <!-- Rabbit silhouette -->
-  <g transform="translate(256, 260)">
+  <!-- Minimalist rabbit silhouette -->
+  <g transform="translate(256, 230)">
     <!-- Ears -->
-    <path d="M-58,-210 C-58,-290 -37,-340 -22,-340 C-7,-340 4,-290 4,-210" fill="white" stroke="#e5e7eb" stroke-width="4"/>
-    <path d="M-48,-210 C-48,-278 -32,-322 -22,-322 C-12,-322 -2,-278 -2,-210" fill="url(#ear)"/>
-    <path d="M58,-210 C58,-290 37,-340 22,-340 C7,-340 -4,-290 -4,-210" fill="white" stroke="#e5e7eb" stroke-width="4"/>
-    <path d="M48,-210 C48,-278 32,-322 22,-322 C12,-322 2,-278 2,-210" fill="url(#ear)"/>
+    <path d="M-52,-310 C-58,-420 -48,-460 -26,-460 C-6,-460 4,-420 0,-310" fill="white" opacity="0.95"/>
+    <path d="M52,-310 C58,-420 48,-460 26,-460 C6,-460 -4,-420 0,-310" fill="white" opacity="0.95"/>
+    <path d="M-42,-310 C-45,-390 -38,-425 -26,-425 C-15,-425 -9,-390 -6,-310" fill="#fbcfe8" opacity="0.6"/>
+    <path d="M42,-310 C45,-390 38,-425 26,-425 C15,-425 9,-390 6,-310" fill="#fbcfe8" opacity="0.6"/>
     <!-- Head -->
-    <ellipse cx="0" cy="-92" rx="100" ry="92" fill="white" stroke="#e5e7eb" stroke-width="4"/>
+    <ellipse cx="0" cy="-105" rx="125" ry="115" fill="white"/>
     <!-- Eyes -->
-    <ellipse cx="-36" cy="-105" rx="13" ry="14" fill="#1f2937"/>
-    <ellipse cx="-36" cy="-105" rx="5" ry="5" fill="white" opacity="0.8"/>
-    <ellipse cx="36" cy="-105" rx="13" ry="14" fill="#1f2937"/>
-    <ellipse cx="36" cy="-105" rx="5" ry="5" fill="white" opacity="0.8"/>
+    <circle cx="-46" cy="-120" r="16" fill="#1f2937"/>
+    <circle cx="-46" cy="-120" r="5" fill="white"/>
+    <circle cx="46" cy="-120" r="16" fill="#1f2937"/>
+    <circle cx="46" cy="-120" r="5" fill="white"/>
     <!-- Nose -->
-    <path d="M-8,-78 L0,-70 L8,-78" fill="#fca5a5" stroke="#f87171" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M-10,-88 L0,-78 L10,-88" fill="#fca5a5" stroke="#f87171" stroke-width="1.5" stroke-linejoin="round"/>
     <!-- Mouth -->
-    <path d="M0,-70 Q-10,-58 0,-52 Q10,-58 0,-70" fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round"/>
-    <!-- Cheeks -->
-    <circle cx="-58" cy="-78" r="10" fill="#fce7f3" opacity="0.5"/>
-    <circle cx="58" cy="-78" r="10" fill="#fce7f3" opacity="0.5"/>
+    <path d="M0,-78 Q-10,-68 0,-62 Q10,-68 0,-78" fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round"/>
     <!-- Body -->
-    <ellipse cx="0" cy="48" rx="85" ry="58" fill="white" stroke="#e5e7eb" stroke-width="4"/>
+    <ellipse cx="0" cy="62" rx="105" ry="72" fill="white"/>
     <!-- Book -->
-    <g transform="translate(0, 10)">
-      <rect x="-42" y="-6" width="84" height="64" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="4"/>
-      <line x1="0" y1="-3" x2="0" y2="55" stroke="#d97706" stroke-width="2.5" opacity="0.4"/>
-      <line x1="-26" y1="10" x2="-8" y2="10" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-      <line x1="-26" y1="24" x2="-8" y2="24" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-      <line x1="-26" y1="38" x2="-8" y2="38" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-      <line x1="8" y1="10" x2="26" y2="10" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-      <line x1="8" y1="24" x2="26" y2="24" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-      <line x1="8" y1="38" x2="26" y2="38" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
-    </g>
-    <!-- Paws over book -->
-    <ellipse cx="-36" cy="42" rx="16" ry="10" fill="white" stroke="#e5e7eb" stroke-width="2.5"/>
-    <ellipse cx="36" cy="42" rx="16" ry="10" fill="white" stroke="#e5e7eb" stroke-width="2.5"/>
+    <rect x="-48" y="14" width="96" height="72" rx="8" fill="#fef3c7"/>
+    <line x1="-26" y1="36" x2="-8" y2="36" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+    <line x1="-26" y1="52" x2="-8" y2="52" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+    <line x1="8" y1="36" x2="26" y2="36" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+    <line x1="8" y1="52" x2="26" y2="52" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
   </g>
 </svg>
