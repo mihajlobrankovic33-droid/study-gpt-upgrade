@@ -27,7 +27,7 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch: network first for static assets, skip API calls
+// Fetch: only cache same-origin static assets, skip everything else
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -35,14 +35,9 @@ self.addEventListener("fetch", (event) => {
   // Skip non-GET requests
   if (request.method !== "GET") return;
 
-  // Skip API calls to Ollama and WebLLM model downloads - let them pass through
-  if (
-    url.hostname === "localhost" ||
-    url.hostname === "127.0.0.1" ||
-    url.hostname.includes("huggingface.co") ||
-    url.hostname.includes("mlc.ai") ||
-    url.hostname.includes("webllm")
-  ) {
+  // Only handle same-origin requests (our app's static assets)
+  // Skip all cross-origin requests (API calls, model downloads, etc.)
+  if (url.origin !== self.location.origin) {
     return;
   }
 
